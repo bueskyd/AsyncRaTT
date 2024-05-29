@@ -2,6 +2,6 @@ let rec foo = \f ->
     let rec bar = \(x :: xs) ->
         x :: delay (bar (adv xs)) in
     let baz = box (\x -> x) in
-    "" :: delay(adv (wait keyboard) :: foo baz);
+    delay(adv (wait keyboard) :: foo baz);
 
 console <- 1 :: never;
