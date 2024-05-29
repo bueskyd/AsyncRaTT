@@ -1,0 +1,4 @@
+let add_delayed = \(a : int later) -> \(b : int later) ->
+    delay (adv a + adv b :: never);
+
+console <- 0 :: never; 

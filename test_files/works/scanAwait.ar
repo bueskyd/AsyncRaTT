@@ -1,0 +1,15 @@
+let rec scan = \f acc s -> (
+    match s with
+    a :: as ->
+        let acc0 = (unbox f) acc a in
+        acc0 :: delay (scan f acc0 (adv as)));
+
+let rec scanAwait = \f acc as ->
+    acc :: delay (scan f acc (adv as));
+
+let second =
+    let rec aux = \n ->
+        delay (let x = adv (wait second) in n :: aux (n + 1)) in
+    aux 0;
+
+console <- scanAwait (box (\a b -> a + b)) 0 second;

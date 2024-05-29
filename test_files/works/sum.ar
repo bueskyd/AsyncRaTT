@@ -1,0 +1,14 @@
+let rec scan = \(f : ('b -> 'a -> 'b) boxed) (acc : 'b) (s : 'a signal) -> (
+    match s with
+    a :: as ->
+        let acc0 = (unbox f) acc a in
+        acc0 :: delay (scan f acc0 (adv as)));
+
+let sum = scan (box (\m n -> m + n)) 0;
+
+let second =
+    let rec aux = \n ->
+        delay (let x = adv (wait second) in n :: aux (n + 1)) in
+    0 :: aux 1;
+
+console <- sum second;

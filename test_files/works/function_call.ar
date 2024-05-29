@@ -1,0 +1,21 @@
+//let rec apply : [](int -> int) -> int -> int = \(f : [](int -> int)) -> \(x : int) ->
+//    delay (f x :: apply f x);
+//
+//console <- apply (\x -> x + 1) 0;
+
+//let rec apply = \(x : int) ->
+//    delay (
+//        let x1 = add x in
+//        adv x1 :: apply x
+//    );
+
+let add = \(x : string) ->
+    delay (x ^ adv (wait keyboard));
+
+let rec apply = \(x : string) ->
+    let x1 = add x in
+    delay (
+        adv x1 :: apply x
+    );
+
+console <- "" :: apply "!";

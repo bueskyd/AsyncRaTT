@@ -1,0 +1,5 @@
+let rec foo = \f ->
+    let g = box (\y -> f y) in
+    delay ((unbox g) (adv (wait keyboard)) :: foo f);
+
+console <- 0 :: foo (\n -> n);

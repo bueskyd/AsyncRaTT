@@ -1,0 +1,31 @@
+(ocamllex lexer)
+(menhir (flags --dump) (modules parser))
+(library
+ (name arclib)
+ (libraries unix threads str)
+ (modules
+   io
+   exceptions
+   errors
+   flags
+   monad
+   util
+   absyn
+   type_env
+   type_env_m
+   lexer
+   parser
+   inference
+   interpreter
+   runtime_value
+   defaults
+   clocks
+   rename
+   optimize
+   main
+   program_env
+   free_bindings
+   transpiler
+   transpile_template
+ )
+)

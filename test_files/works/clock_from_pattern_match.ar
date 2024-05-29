@@ -1,0 +1,7 @@
+let rec foo : string -> string signal = \(x : string) ->
+    let a : string later =
+        (match (x, delay (adv (wait keyboard))) with
+        | (x, d) -> d) in
+    x :: delay (foo (adv a));
+
+console <- foo "a";

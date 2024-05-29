@@ -1,0 +1,1 @@
+ocamlopt unix.cmxa -thread threads.cmxa $1

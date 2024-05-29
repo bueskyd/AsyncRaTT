@@ -1,0 +1,5 @@
+let rec foo = \f ->
+    let x = box (f 7) in
+    delay (x :: foo f);
+
+console <- 0 :: foo (\x -> x);

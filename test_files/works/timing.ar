@@ -1,0 +1,30 @@
+let fst = \(t : 'a * 'b) -> (match t with (x,_) -> x);
+let snd = \(t : 'a * 'b) -> (match t with (_,x) -> x);
+
+let rec second_int_sig : int -> int signal later = \i ->
+    delay(let second = adv (wait second) in i :: second_int_sig i);
+
+let rec second_int : int -> int signal = \i -> (
+    i :: second_int_sig i
+);
+
+
+let rec minute_int_sig : int -> int signal later = \i ->
+    delay(let second = adv (wait minute) in i :: minute_int_sig i);
+
+let rec minute_int : int -> int signal = \i -> (
+    i :: minute_int_sig i
+);
+
+
+// This will work once the clock of a variable is handled correctly
+//let rec program_time = (
+//    let trigger = delay(read system_time, wait minute) in
+//    delay(fst (adv trigger) :: program_time)
+//);
+
+let rec program_time = (
+    delay(fst (read system_time, adv(wait minute)) :: program_time)
+);
+
+console <- 0 :: program_time;

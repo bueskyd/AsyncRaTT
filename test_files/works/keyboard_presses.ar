@@ -1,0 +1,17 @@
+let fst = \(t : 'a * 'b) -> (match t with (x,_) -> x);
+
+let rec presses : int -> int signal later = \i -> (
+    delay(
+        (let key_press = adv (wait keyboard) in i)
+        ::
+        presses (i+1)
+    )
+);
+
+let rec latest_press = delay(
+    (fst (read keyboard, adv(wait minute)))
+    ::
+    latest_press
+);
+
+console <- 3 :: never;

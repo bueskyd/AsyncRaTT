@@ -1,0 +1,12 @@
+let rec foo = \x ->
+    let a =
+        (match (x, delay (adv (wait minute))) with
+        | (x, d) -> d) in
+    let b =
+        (match (x, delay (adv (wait second))) with
+        | (x, d0) -> d0) in
+    x :: delay (foo (
+        let y = adv b in
+        adv a));
+
+console <- foo ();

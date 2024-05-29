@@ -1,0 +1,17 @@
+let rec switch = \(x :: xs) d ->
+    x :: delay (match select xs d with
+        | Left (xs', d') -> switch xs' d'
+        | Right (_, d') -> d'
+        | Both (_, d') -> d');
+
+let second =
+    let rec aux = \n ->
+        delay(let x = adv (wait second) in n :: aux (n + 1)) in
+    0 :: aux 1;
+
+let minute =
+    let rec aux = \n ->
+        delay(let x = adv (wait minute) in n :: aux (n + 1)) in
+    aux 0;
+
+console <- switch second minute;

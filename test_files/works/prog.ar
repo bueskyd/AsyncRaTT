@@ -1,0 +1,6 @@
+
+let key_add = \i -> (
+    delay (adv(wait keyboard) ^ i)
+);
+
+console <- 3 :: never;

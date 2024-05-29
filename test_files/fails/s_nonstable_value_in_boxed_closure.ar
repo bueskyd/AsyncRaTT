@@ -1,0 +1,6 @@
+let rec foo = \f ->
+    let g = box (\y -> (unbox f) y) in // This part should fail because f is not stable (it is a function)
+    let h = box (\z -> z) in
+    delay (adv (wait keyboard) :: foo h);
+
+console <- 0 :: foo (box(\n -> n));

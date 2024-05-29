@@ -1,0 +1,4 @@
+let rec test_recursion = \(a : string) ->
+    delay(((adv (wait keyboard)) ^ a) :: test_recursion (a ^ "."));
+
+console <- "" :: test_recursion ".";

@@ -1,0 +1,5 @@
+let rec foo =
+    let channel_value = wait second in
+    delay (adv channel_value :: foo);
+
+console <- () :: foo;

@@ -1,0 +1,28 @@
+(lang dune 3.7)
+
+(name arc)
+
+(generate_opam_files true)
+
+
+(authors "Emil Jäpelt")
+
+(maintainers "Emil Jäpelt")
+
+(license LICENSE)
+
+(using menhir 2.1)
+
+(package
+ (name arc)
+ (synopsis "Language implementation for AsyncRaTT.")
+ (description "")
+ (depends 
+  (ocaml (>= 5.1.0)) 
+  (dune (>= 3.12.2))
+  (menhir (= 2.1))
+  )
+ (tags
+  (compiler)))
+
+; See the complete stanza docs at https://dune.readthedocs.io/en/stable/dune-files.html#dune-project

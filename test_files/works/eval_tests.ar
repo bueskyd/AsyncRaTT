@@ -1,0 +1,46 @@
+let sum = \a -> \b -> a + b;
+
+let test_let = \a ->
+    let x = a + a in
+    x;
+
+let test_closure = \a ->
+    let f = \b -> a + b in
+    f;
+
+let mk_pair = \a -> \b -> (a, b);
+
+let int_thunk = \a -> 7;
+
+let test_delay_adv = \a ->
+    delay (
+        let x = (adv (wait keyboard)) ^ "1" in
+        x);
+
+let test_println = \a -> println a;
+
+let rec test_recursion = \(a : int) ->
+    delay(adv (wait keyboard) :: test_recursion a);
+
+let a = sum 2 2;
+
+let b = test_let 1;
+
+let c = mk_pair 4 4;
+
+let d = int_thunk ();
+
+let e = test_closure 4 4;
+
+let f = test_delay_adv "7";
+
+let g = test_recursion 1;
+
+let h =
+    let delayed = test_delay_adv "7" in
+    delay(adv delayed);
+
+let i = test_println 7;
+
+
+console <- 3 :: never;

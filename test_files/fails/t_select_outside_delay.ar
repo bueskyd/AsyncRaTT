@@ -1,0 +1,5 @@
+let rec foo =
+    let y = select (wait second) (wait second) in
+    delay (adv (wait second) :: foo);
+
+console <- foo;

@@ -1,0 +1,11 @@
+(executable
+ (public_name arc_test) 
+ (name arc_test)
+ (libraries arclib example)
+ (modules
+   arc_test
+   file_tests
+   inference_tests
+   random_tests
+ )
+)

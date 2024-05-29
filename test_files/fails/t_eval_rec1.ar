@@ -1,0 +1,2 @@
+let rec test = \(a : int) ->
+    delay((adv (wait keyboard) + 1));

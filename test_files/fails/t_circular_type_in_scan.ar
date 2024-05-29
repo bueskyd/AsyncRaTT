@@ -1,0 +1,10 @@
+let rec scan = \(f : ('b -> 'a -> 'b) boxed) (acc : 'b) (s : 'a signal) -> (
+    match s with
+    a :: as ->
+        let acc0 = (unbox f) acc a in
+        acc0 :: delay (scan f acc0 (adv as)));
+
+let rec second = \t ->
+    delay (let x = wait second in t :: second (t + 1));
+
+console <- scan (box (\(acc0, acc1) a -> acc0)) (0, 1) (0 :: second 1); // This should not type check

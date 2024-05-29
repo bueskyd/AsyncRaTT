@@ -1,0 +1,9 @@
+let rec map = \(s : 'a signal) -> \(f : ('a -> 'b) boxed) -> (
+    match s with
+    | x :: xs -> (unbox f) x :: delay (map (adv xs) f)
+);
+
+let rec loop = \x ->
+    x :: delay (loop (adv (wait keyboard)));
+
+console <- loop "0";

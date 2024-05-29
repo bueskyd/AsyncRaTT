@@ -1,0 +1,8 @@
+let rec map = \f s -> (
+    match s with
+    x :: xs -> (unbox f) x :: delay (map f (adv xs)));
+
+let rec second = \t ->
+    delay (let x = adv (wait second) in t :: second (t + 1));
+
+console <- map (box (\x -> x + 2)) (0 :: second 1);

@@ -1,0 +1,7 @@
+let snd = \(t : 'a * 'b) -> (match t with (_,x) -> x);
+let tup = (1,"!");
+
+let rec key_handle_add : string -> string signal later = \s ->
+    delay(adv(wait keyboard) ^ s :: key_handle_add s)
+;
+console <- "" :: key_handle_add (snd tup);

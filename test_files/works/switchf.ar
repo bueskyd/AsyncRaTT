@@ -1,0 +1,26 @@
+let rec switchf = \(x :: xs) d ->
+    x :: delay (
+        match select xs d with
+        | Left (xs', d1') -> switchf xs' d1'
+        | Right (_, d') -> d' x
+        | Both (x' :: xs, d') -> d' x');
+
+let second =
+    let rec aux = \n ->
+        delay(let x = adv (wait second) in n :: aux (n + 1)) in
+    0 :: aux 1;
+
+let minute =
+    let rec aux = \n ->
+        delay(let x = adv (wait minute) in n :: aux (n + 1)) in
+    0 :: aux 0;
+
+let g = \n -> minute;
+
+let f = delay (let x = adv (wait minute) in g);
+
+console <- switchf second f;
+
+//console <-
+//    let f = box (\n -> delay (let x = adv (wait minute) in minute)) in
+//    switchf second (delay (unbox f));

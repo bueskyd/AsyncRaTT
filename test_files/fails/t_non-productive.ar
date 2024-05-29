@@ -1,0 +1,6 @@
+let rec func_0 : 'a -> 'a = \x -> func_0 x;
+
+let rec func_1 : int -> int = \i -> if i = 0 then 1 else (func_1 i);
+
+
+console <- 1 :: never;

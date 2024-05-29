@@ -1,0 +1,10 @@
+// This is giving incompatible clock problems, when () is defined
+let a =
+    let x = wait keyboard in
+    delay (
+        let y = wait keyboard in
+        (adv x) ^ "2"
+    );
+
+
+console <- 3 :: never;

@@ -1,0 +1,3 @@
+let f = \(x: int later) -> delay(\y -> adv x);
+
+console <- 1 :: never;

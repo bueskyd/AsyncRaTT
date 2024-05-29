@@ -1,0 +1,7 @@
+let rec foo = \x ->
+    let boxed_x = box (x) in
+    let unboxed_boxed_x = unbox (boxed_x) in
+    let y = box (unboxed_boxed_x) in
+    delay (adv (wait keyboard) ^ unbox y :: foo "");
+
+console <- "" :: foo "!";

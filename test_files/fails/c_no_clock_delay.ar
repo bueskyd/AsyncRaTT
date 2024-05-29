@@ -1,0 +1,3 @@
+let ltr = delay 1;
+
+console <- 1 :: never;

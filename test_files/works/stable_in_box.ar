@@ -1,0 +1,5 @@
+let rec foo = \x ->
+    let y = box (x) in
+    delay (((unbox y) ^ adv (wait keyboard)) :: foo x);
+
+console <- "" :: foo "";

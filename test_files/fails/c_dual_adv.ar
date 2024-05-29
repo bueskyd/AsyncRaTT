@@ -1,0 +1,4 @@
+// should fail, needs a select x y, because x and y might be different clocks
+let rec map2 = \(x : int later) (y: int later) -> delay(adv x + adv y);
+
+console <- 1 :: never;

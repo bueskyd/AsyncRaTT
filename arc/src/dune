@@ -1,0 +1,7 @@
+(executable
+ (public_name arc)
+ (name arc)
+ (modules arc program_env_string)
+ (libraries arclib example str) 
+ (modes byte exe)
+)

@@ -1,0 +1,5 @@
+
+
+let rec key_handle = delay (Some (adv (wait keyboard)) :: key_handle);
+
+console <- None :: key_handle;

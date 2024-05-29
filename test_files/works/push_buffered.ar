@@ -1,0 +1,4 @@
+let rec foo =
+    delay (read keyboard ^ adv (wait keyboard) :: foo);
+
+console <- "" :: foo;

@@ -1,0 +1,12 @@
+let rec interleave = \f xs ys ->
+    delay ((match select xs ys with
+        | Left ((x :: xs'), ys') -> x :: interleave f xs' ys'
+        | Right (xs', (y :: ys')) -> y :: interleave f xs' ys'
+        | Both ((x :: xs'), (y :: ys')) -> (unbox f) x y :: interleave f xs' ys'));
+
+let second =
+    let rec aux = \n ->
+        delay(let x = adv (wait second) in n :: aux (n + 1)) in
+    aux 0;
+
+console <- 0 :: interleave (box (\a b -> a * b)) second second;

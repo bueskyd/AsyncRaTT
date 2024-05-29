@@ -1,0 +1,7 @@
+let rec foo = \x ->
+    delay (
+        match x with
+        | 0 -> adv (wait second) :: foo 1
+        | _ -> adv (wait minute) :: foo 0);
+
+console <- () :: foo 0;

@@ -1,0 +1,79 @@
+
+type nat_sig = int signal;
+
+type nat_bool_select = (int, bool) selection;
+
+type dir = 
+    | North
+    | South
+    | East
+    | West;
+
+type 'a list =
+    | Cons of 'a * ('a list)
+    | Empty;
+
+type nat_list = int list;
+
+type basic_wrapper =
+    | Nat of int
+    | Bool of bool;
+
+type extra_wrapper =
+    | Wrap of basic_wrapper;
+
+type 'a poly_wrapper = 
+    | PW of 'a;
+
+type nat_tuple = int * int;
+
+type 'a tuple = 'a * 'a;
+
+
+let sum_nat_tuple = \(t: nat_tuple) -> ( match t with (a,b) -> a + b );
+
+let sum_poly_nat_tuple = \(t: int tuple) -> ( match t with (a,b) -> a + b );
+
+let dir_num = \(d : dir) -> ( match d with
+    | North -> 0
+    | East -> 1
+    | South -> 2
+    | West -> 3
+);
+
+let lol = \a b -> (a + b);
+
+let meme = \(w: basic_wrapper) -> ( match w with
+    | Nat x -> 0
+    | Bool b -> 1
+);
+
+//let lst = 
+//    let l : nat_list = Cons(1,Empty) in l
+//;
+
+let cc = 
+    let c: int poly_wrapper = PW 2 in c
+;
+
+let kk = 
+    let k: int tuple = (2,2) in k
+;
+
+let bb =
+    let b: (int,bool) selection = Both(2,true) in b
+;
+
+
+let dd =
+    let d = Nat 1 in d
+;
+
+let ss = \(b : 'a boxed) (o : 'a boxed) -> (
+    delay(match select (wait keyboard) (wait keyboard) with
+    | Left _ -> unbox o
+    | Right _ -> unbox o
+    | Both _ -> unbox b)
+);
+
+console <- 3 :: never;

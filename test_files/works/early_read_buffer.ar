@@ -1,0 +1,5 @@
+let rec foo =
+    let y = read keyboard in
+    y :: delay (let a = adv (wait second) in foo);
+
+console <- foo;

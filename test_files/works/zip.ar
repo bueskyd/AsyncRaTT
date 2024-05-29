@@ -1,0 +1,34 @@
+type 'a option =
+    | Some of 'a
+    | None;
+
+let fst = \(x,_) -> x;
+
+let rec zip = \x_sig y_sig -> (
+    match x_sig with x::xs -> (
+    match y_sig with y::ys -> (
+        (x, y) :: delay(match select xs ys with
+            | Left(xs', ys') -> zip xs' (y::ys')
+            | Right(xs', ys') -> zip (x::xs') ys'
+            | Both(xs', ys') -> zip xs' ys'
+        )
+    ))
+);
+
+let rec key_handel = delay(Some(adv(wait keyboard)) :: key_handel);
+
+let rec program_time = (
+    let x = wait second in
+    delay(
+        fst (read system_time, adv x) :: program_time )
+);
+
+let rec second_int_sig : int -> int signal later = \i ->
+    delay(let second = adv (wait second) in i :: second_int_sig (i + 1));
+
+let second_int : int -> int signal = \i -> (
+    i :: second_int_sig (i + 1)
+);
+
+console <- zip (second_int 1) (0 :: program_time);
+//console <- None :: key_handel;

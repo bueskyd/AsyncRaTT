@@ -1,0 +1,5 @@
+let rec foo = \x ->
+    let f = \y -> y in
+    x :: delay (foo (f (adv (wait second))));
+
+console <- foo 0;

@@ -1,0 +1,6 @@
+// https://bahr.io/pubs/files/rattus-paper.pdf, page 6
+let rec incr : int signal -> int signal = \s -> (
+    match s with x :: xs -> (x + 1) :: delay(incr (adv xs))
+);
+
+console <- incr (3 :: never);

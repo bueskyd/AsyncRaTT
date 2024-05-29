@@ -1,0 +1,11 @@
+let add = \(x : string) ->
+    delay (x ^ adv (wait keyboard));
+
+let rec apply = \(x : string) ->
+    let x1 = add x in
+    let x2 = x1 in
+    delay (
+        (adv x1 ^ adv x2) :: apply x
+    );
+
+console <- "0" :: apply "!";

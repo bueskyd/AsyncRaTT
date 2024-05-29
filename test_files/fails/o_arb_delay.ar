@@ -1,0 +1,2 @@
+// Attemps to move arbitrary data into the future
+let rec func : 'a -> 'a signal later = \x -> delay(x :: func x);

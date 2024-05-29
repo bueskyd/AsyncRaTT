@@ -1,0 +1,13 @@
+let rec scan = \f acc (a :: as) -> 
+    let acc0 = (unbox f) acc a in
+    acc0 :: delay (scan f acc0 (adv as));
+
+let rec second = delay(adv(wait second) :: second);
+
+console <-
+    scan
+        (box (\(c, (acc0, acc1)) _ ->
+            let y = acc0 + acc1 in
+            (acc0, (acc1, y))))
+        (0, (0, 1))
+        (() :: second);

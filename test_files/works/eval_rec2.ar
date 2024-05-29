@@ -1,0 +1,4 @@
+let rec loop = \x ->
+    x :: delay (loop (adv (wait keyboard)));
+
+console <- loop "0";

@@ -1,0 +1,10 @@
+
+let rec rat_signal  = \c i -> delay ( let w = adv(wait second) in (match i with
+        | 0 -> "(_)_(_)" :: rat_signal 1
+        | 1 -> " (o o)" :: rat_signal 2
+        | 2 -> "~~\./~~" :: (if c then rat_signal 3 else never)
+        | _ -> "" :: rat_signal 0
+));
+
+
+console <- "" :: rat_signal false 0;

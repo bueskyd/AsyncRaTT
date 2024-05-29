@@ -1,0 +1,6 @@
+let map = \f ->
+    let rec run = \(x :: xs) ->
+        f x :: delay(run (adv xs)) in
+    run;
+
+console <- 1 :: never;

@@ -1,0 +1,5 @@
+let foo = \sig -> (
+    match sig with
+    | x :: xs -> x);
+
+console <- 0 :: never;
