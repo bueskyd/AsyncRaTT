@@ -90,18 +90,6 @@ let is_empty_clock_set clock =
 let clock_set_equal (CS cl1) (CS cl2) =
     let channels_equal = StringSet.equal cl1.channels cl2.channels in
     let bindings_equal = StringSet.equal cl1.variables cl2.variables in
-    let rec remove_first x lst =
-        match lst with
-        | [] -> None
-        | y :: ys when x = y -> Some ys
-        | y :: ys -> remove_first x ys in
-    let rec list_equal lst1 lst2 =
-        match lst1 with
-        | [] -> lst2 = []
-        | x :: xs ->
-            match remove_first x lst2 with
-            | Some lst2' -> list_equal xs lst2'
-            | None -> false in
     channels_equal && bindings_equal
 
 let clock_set_compatible cl1 cl2 =
