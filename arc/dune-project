@@ -5,9 +5,9 @@
 (generate_opam_files true)
 
 
-(authors "Emil Jäpelt")
+(authors "Emil Jäpelt" "Alexander Berg")
 
-(maintainers "Emil Jäpelt")
+(maintainers "Emil Jäpelt" "Alexander Berg")
 
 (license LICENSE)
 
