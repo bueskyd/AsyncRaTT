@@ -41,9 +41,9 @@ let dir_num = \(d : dir) -> ( match d with
     | West -> 3
 );
 
-let lol = \a b -> (a + b);
+let add = \a b -> (a + b);
 
-let meme = \(w: basic_wrapper) -> ( match w with
+let nat_or_bool = \(w: basic_wrapper) -> ( match w with
     | Nat x -> 0
     | Bool b -> 1
 );

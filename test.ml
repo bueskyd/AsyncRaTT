@@ -1,4 +1,4 @@
-let template = format_of_string "
+
 module Arclib = struct
 module Absyn = struct
 module StringSet = Set.Make(String)
@@ -146,74 +146,74 @@ let rec value_type typ = match typ with
     | _ -> false
 
 (*let rec additive_type_string constructs =
-    List.map (fun (n,t) -> \"| \"^n^\" of \"^type_string t) ts*)
+    List.map (fun (n,t) -> "| "^n^" of "^type_string t) ts*)
 
 let rec type_string typ = match typ with
-    | T_Poly(s) -> \"'\"^s
-    | T_Unit -> \"unit\"
-    | T_Int -> \"int\"
-    | T_Bool -> \"bool\"
-    | T_String -> \"string\"
-    | T_Multiplicative(t1,t2) -> \"(\"^ type_string t1 ^\" * \"^ type_string t2 ^\")\"
-    | T_Additive ts -> List.map (fun (n,t) -> \"| \"^n^\" of \"^type_string t) ts |> String.concat \" \"
-    | T_Function(t1,t2) -> \"(\"^ type_string t1 ^\" -> \"^ type_string t2 ^\")\"
-    | T_Existential t -> \"O(\" ^ type_string t ^ \")\"
-    | T_Universal t -> \"(A)\" ^ type_string t
-    | T_Fix(n,t) -> \"Fix \"^n^\".\"^type_string t
-    | T_Boxed t -> \"[](\" ^ type_string t ^ \")\"
+    | T_Poly(s) -> "'"^s
+    | T_Unit -> "unit"
+    | T_Int -> "int"
+    | T_Bool -> "bool"
+    | T_String -> "string"
+    | T_Multiplicative(t1,t2) -> "("^ type_string t1 ^" * "^ type_string t2 ^")"
+    | T_Additive ts -> List.map (fun (n,t) -> "| "^n^" of "^type_string t) ts |> String.concat " "
+    | T_Function(t1,t2) -> "("^ type_string t1 ^" -> "^ type_string t2 ^")"
+    | T_Existential t -> "O(" ^ type_string t ^ ")"
+    | T_Universal t -> "(A)" ^ type_string t
+    | T_Fix(n,t) -> "Fix "^n^"."^type_string t
+    | T_Boxed t -> "[](" ^ type_string t ^ ")"
     | T_Named([],n) -> n
-    | T_Named(typs,n) -> \"(\"^(List.map type_string typs |> String.concat \",\")^\")\"^n
-    | T_Signal t -> type_string t^\" signal\"
+    | T_Named(typs,n) -> "("^(List.map type_string typs |> String.concat ",")^")"^n
+    | T_Signal t -> type_string t^" signal"
 
 and term_string (Term(_,t)) = term_inner_string t
 
 and term_inner_string t = match t with
     | Value v -> value_string v
-    | Tuple(t1,t2) -> \"(\"^term_string t1^\",\"^term_string t2^\")\"
-    | App(t1,t2) -> \"(\"^term_string t1^\") (\"^term_string t2^\")\"
-    | Let(name, _,s,body) -> \"let \" ^ name ^ \" = \" ^ term_string s ^ \" in\\n\" ^ term_string body
+    | Tuple(t1,t2) -> "("^term_string t1^","^term_string t2^")"
+    | App(t1,t2) -> "("^term_string t1^") ("^term_string t2^")"
+    | Let(name, _,s,body) -> "let " ^ name ^ " = " ^ term_string s ^ " in\n" ^ term_string body
     | Match(t,alts) -> 
-        \"match \"^term_string t^\" with\\n\"^(List.map alt_string alts |> String.concat \"\\n\" )
-    | Delay(_, _, t) -> \"delay(\"^term_string t^\")\"
-    | Adv t -> \"adv(\"^term_string t^\")\"
-    | Select(_,_, v1, v2) -> \"select \"^value_string v1^\" \"^value_string v2
-    | Unbox t -> \"unbox(\"^term_string t^\")\"
-    | Fix(l,t) -> \"fix \"^l^\".\"^term_string t
-    | Never -> \"never\"
-    | Read c -> \"read \"^c
-    | SignalCons(t0,t1) -> term_string t0^\" :: \"^term_string t1
+        "match "^term_string t^" with\n"^(List.map alt_string alts |> String.concat "\n" )
+    | Delay(_, _, t) -> "delay("^term_string t^")"
+    | Adv t -> "adv("^term_string t^")"
+    | Select(_,_, v1, v2) -> "select "^value_string v1^" "^value_string v2
+    | Unbox t -> "unbox("^term_string t^")"
+    | Fix(l,t) -> "fix "^l^"."^term_string t
+    | Never -> "never"
+    | Read c -> "read "^c
+    | SignalCons(t0,t1) -> term_string t0^" :: "^term_string t1
 
 and top_string t : string = match t with
-    | TopLet(name,_,s) -> \"let \" ^ name ^ \" = \" ^ term_string s ^ \" \\n\"
-    | TopBind(oc,t) -> oc^\" <- \"^term_string t
-    | TypeDef(n,_,t) -> \"type \"^n^\" = \"^type_string t^\"\\n\"
+    | TopLet(name,_,s) -> "let " ^ name ^ " = " ^ term_string s ^ " \n"
+    | TopBind(oc,t) -> oc^" <- "^term_string t
+    | TypeDef(n,_,t) -> "type "^n^" = "^type_string t^"\n"
 
 and alt_string (pats,t) = 
     let rec pat_string p = match p with
-        | P_Wild -> \"_\"
+        | P_Wild -> "_"
         | P_Any(s,_) -> s
         | P_Int i -> string_of_int i
-        | P_Bool true -> \"true\"
-        | P_Bool false -> \"false\"
-        | P_Tuple(p1,p2,_) -> \"(\"^pat_string p1^\",\"^pat_string p2^\")\"
-        | P_Cons(p1,p2,_) -> pat_string p1 ^\"::\"^pat_string p2
-        | P_Construct(name,ps,_) -> name^\"(\"^pat_string ps^\")\"
+        | P_Bool true -> "true"
+        | P_Bool false -> "false"
+        | P_Tuple(p1,p2,_) -> "("^pat_string p1^","^pat_string p2^")"
+        | P_Cons(p1,p2,_) -> pat_string p1 ^"::"^pat_string p2
+        | P_Construct(name,ps,_) -> name^"("^pat_string ps^")"
     in
-    \"| \"^(List.map pat_string pats |> String.concat \"| \") ^\" -> \"^term_string t
+    "| "^(List.map pat_string pats |> String.concat "| ") ^" -> "^term_string t
 
 and value_string (Val(_,v)) = match v with
     | Binding x -> x
-    | Unit -> \"()\"
+    | Unit -> "()"
     | Int v -> string_of_int v
-    | Lambda(arg, t, _, body) -> \"\\\\\"^arg^\".\"^term_string body
-    | Wait c -> \"wait \"^c
-    | Box (t, _) -> \"box(\"^ term_string t^\")\"
+    | Lambda(arg, t, _, body) -> "\\"^arg^"."^term_string body
+    | Wait c -> "wait "^c
+    | Box (t, _) -> "box("^ term_string t^")"
     | Bool b ->
         if b
-        then \"true\"
-        else \"false\"
-    | String str -> \"\\\"\"^str^\"\\\"\"
-    | Construct(n,t) -> n^\"(\"^term_string t^\")\"
+        then "true"
+        else "false"
+    | String str -> "\""^str^"\""
+    | Construct(n,t) -> n^"("^term_string t^")"
 end
 module Runtime_value = struct
 open Absyn
@@ -264,32 +264,32 @@ type delayed = Delayed of {
 let rec runtime_value_string (value : runtime_value) : string =
     match value with
     | Binding_rv name -> name
-    | Unit_rv -> \"()\"
+    | Unit_rv -> "()"
     | Int_rv n -> string_of_int n
-    | Bool_rv b -> if b then \"true\" else \"false\"
-    | String_rv str -> \"\\\"\"^str^\"\\\"\"
-    | Tuple_rv (v0, v1) -> \"(\" ^ runtime_value_string v0 ^ \", \" ^ runtime_value_string v1 ^ \")\"
+    | Bool_rv b -> if b then "true" else "false"
+    | String_rv str -> "\""^str^"\""
+    | Tuple_rv (v0, v1) -> "(" ^ runtime_value_string v0 ^ ", " ^ runtime_value_string v1 ^ ")"
     | Closure (param_name, VE value_env, term) ->
         let bindings_list = (StringMap.to_list value_env.vars) in
         let env_string = (
             match bindings_list with
-            | [] -> \"\"
+            | [] -> ""
             | _ ->
                 let env_string = List.fold_left
-                    (fun acc (name, B binding) -> acc ^ \", \" ^ name ^ \" <- \" ^ runtime_value_string binding.value)
-                    \"\"
+                    (fun acc (name, B binding) -> acc ^ ", " ^ name ^ " <- " ^ runtime_value_string binding.value)
+                    ""
                     (List.tl bindings_list) in
                 let (fst_name, B fst_binding) = List.hd bindings_list in
-                fst_name ^ \" <- \" ^ runtime_value_string fst_binding.value ^ env_string) in
-        \"closure \" ^ \"[\" ^ env_string ^ \"]\"
-    | Construct_rv (name, v) -> name ^ \"(\" ^ runtime_value_string v ^ \")\"
-    | Built_in_2 build_in -> \"built_in2\"
-    | Built_in_1 build_in -> \"built_in1\"
-    | Location (location, clock) -> \"Loc\" ^ string_of_int location
-    | Box _ -> \"[]\"
-    | Signal_rv (head, tail) -> runtime_value_string head ^ \" :: \" ^ runtime_value_string tail
-    | Wait_rv -> \"wait\"
-    | Rec term -> \"rec\"
+                fst_name ^ " <- " ^ runtime_value_string fst_binding.value ^ env_string) in
+        "closure " ^ "[" ^ env_string ^ "]"
+    | Construct_rv (name, v) -> name ^ "(" ^ runtime_value_string v ^ ")"
+    | Built_in_2 build_in -> "built_in2"
+    | Built_in_1 build_in -> "built_in1"
+    | Location (location, clock) -> "Loc" ^ string_of_int location
+    | Box _ -> "[]"
+    | Signal_rv (head, tail) -> runtime_value_string head ^ " :: " ^ runtime_value_string tail
+    | Wait_rv -> "wait"
+    | Rec term -> "rec"
 end
 module Program_env = struct
 open Absyn
@@ -456,27 +456,27 @@ module Make (Chans: Channels) : ProgramEnvironment = struct
 
   let input_channel_type name = match StringMap.find_opt name input_channels with
     | Some c -> c.typ
-    | None -> failwith (\"No such channel: \"^name)
+    | None -> failwith ("No such channel: "^name)
 
   let output_channel_type name = match StringMap.find_opt name output_channels with
     | Some(c) -> c.typ
-    | None -> failwith (\"No such channel: \"^name)
+    | None -> failwith ("No such channel: "^name)
 
   let is_push_channel name = match StringMap.find_opt name input_channels with
     | Some ({ ctyp = Push; _})
     | Some ({ ctyp = PushBuffered; _ }) -> true
     | Some _ -> false
-    | None -> failwith (\"No such channel: \"^name)
+    | None -> failwith ("No such channel: "^name)
 
   let is_buffered_channel name = match StringMap.find_opt name input_channels with
     | Some ({ ctyp = Buffered; _ })
     | Some ({ ctyp = PushBuffered; _ }) -> true
     | Some _ -> false
-    | None -> failwith (\"No such channel: \"^name)
+    | None -> failwith ("No such channel: "^name)
 
   let handle_events () = 
-      (*Printf.fprintf out \"time_step %%i: \\n%%!\" time;*)
-      (*StringMap.iter (fun c v -> Printf.fprintf out \"\\t%%s: %%s\\n%%!\" c (runtime_value_string v)) (channel_values ());*)
+      (*Printf.fprintf out "time_step %i: \n%!" time;*)
+      (*StringMap.iter (fun c v -> Printf.fprintf out "\t%s: %s\n%!" c (runtime_value_string v)) (channel_values ());*)
       let channel_values = channel_values () in
       Mutex.lock events.lock;
       events.event_list <- [];
@@ -492,8 +492,128 @@ module Make (Chans: Channels) : ProgramEnvironment = struct
 end
 end
 end
-module Program_env_impl = struct %s end
-module Transpiled = struct %s end
+module Program_env_impl = struct 
+open Arclib.Absyn
+open Arclib.Runtime_value
+open Arclib.Program_env
+
+let program_start_epoch = Unix.time () |> int_of_float
+
+(* https://stackoverflow.com/a/13410456 *)
+let get1char () =
+  let termio = Unix.tcgetattr Unix.stdin in
+  let () =
+      Unix.tcsetattr Unix.stdin Unix.TCSADRAIN
+          { termio with Unix.c_icanon = false } in
+  let res = input_char stdin in
+  Unix.tcsetattr Unix.stdin Unix.TCSADRAIN termio;
+  res  
+
+let keyboard_handle () =
+  let c = get1char () in
+  String_rv (Char.escaped c)
+
+let system_time_handle () =
+  let now = Unix.time () |> int_of_float in
+  Int_rv (now - program_start_epoch)
+
+let console_handle v =
+  let str = runtime_value_string v in
+  print_endline ("output: " ^ str)
+
+  
+let channels = [
+    ( "keyboard", PushBufferedChannel { delay = 0.1; typ = T_String; handler = keyboard_handle; initial_buffer = String_rv ""});
+    ( "second", PushChannel { delay = 1.0; typ = T_Unit; handler = (fun () -> Unit_rv)});
+    ( "minute", PushChannel { delay = 60.0; typ = T_Unit; handler = (fun () -> Unit_rv)});
+    ( "system_time", BufferedChannel { delay = 1.0; typ = T_Int; handler = system_time_handle; initial_buffer = (Int_rv 0) });
+    ( "console", OutputChannel { typ = None; handler = console_handle});
+    ( "console_int", OutputChannel { typ = Some T_Int; handler =  console_handle});
+]
+ end
+module Transpiled = struct open Arclib.Runtime_value
+    module StringMap = Map.Make(String)
+    module StringSet = Set.Make(String)
+    module type Transpiled = sig
+        val run : unit -> unit
+    end
+    module Make (PE : Arclib.Program_env.ProgramEnvironment) : Transpiled = struct
+    type 'a signal =
+        | Cons of ('a * ((unit -> 'a signal) * StringSet.t))
+    type ('a, 'b) selection =
+        | Left of 'a * ((unit -> 'b) * StringSet.t)
+        | Right of ((unit -> 'a) * StringSet.t) * 'b
+        | Both of 'a * 'b
+    let never = 
+        let rec never' () = (fun a -> never' () a) in
+        (never' (), StringSet.empty)
+    let outputs = ref StringMap.empty
+    let updated_channel_name = ref ""let buffers = ref (PE.buffer_values ())
+let keyboard_buffer () = 
+	let wrapped_value = StringMap.find "keyboard" !buffers in
+	(match wrapped_value with String_rv s -> s)
+let system_time_buffer () = 
+	let wrapped_value = StringMap.find "system_time" !buffers in
+	(match wrapped_value with Int_rv n -> n)
+let set_output_channel channel_name (thunk, in_channels) =
+	outputs := StringMap.add channel_name (thunk, in_channels) !outputs
+let write_channel channel_name value =
+	let wrapped_value =
+		match channel_name with
+		| "console" -> Tuple_rv (Int_rv (fst value), Int_rv (snd value))
+		| _ -> failwith ("Invalid channel " ^ channel_name ^ "\"") in
+	let channel = StringMap.find channel_name PE.output_channels in
+	channel.handler wrapped_value
+let keyboard_update = ref ""
+
+let second_update = ref ()
+let update_input_channel channel_name value =
+            updated_channel_name := channel_name;
+            match channel_name with
+	| "keyboard" -> keyboard_update := (match value with String_rv s -> s)
+	| "second" -> second_update := ()
+	| _ -> ()
+type ('a) option = | Some of 'a | None of unit
+let fst_0 = fun arg_0_1 -> match arg_0_1 with
+| (x_2, _) -> x_2
+let rec zip_3 = fun x_sig_4 -> fun y_sig_5 -> match x_sig_4 with
+| Cons (x_6, xs_7) -> match y_sig_5 with
+| Cons (y_8, ys_9) -> Cons ((x_6, y_8), ((fun () -> (match (match StringSet.mem !updated_channel_name ((StringSet.union (StringSet.of_list []) (List.fold_left StringSet.union StringSet.empty [snd xs_7]))), StringSet.mem !updated_channel_name ((StringSet.union (StringSet.of_list []) (List.fold_left StringSet.union StringSet.empty [snd ys_9]))) with
+| true, true -> Both (fst (xs_7) (), fst (ys_9) ())
+| true, false -> Left (fst (xs_7) (), ys_9)
+| false, true -> Right (xs_7, fst (ys_9) ())) with
+| Left (xs'_10, ys'_11) -> ( ( zip_3 ) ( xs'_10 ) ) ( Cons (y_8, ys'_11) )
+| Right (xs'_12, ys'_13) -> ( ( zip_3 ) ( Cons (x_6, xs'_12) ) ) ( ys'_13 )
+| Both (xs'_14, ys'_15) -> ( ( zip_3 ) ( xs'_14 ) ) ( ys'_15 ))), (StringSet.union (StringSet.of_list []) (List.fold_left StringSet.union StringSet.empty [snd xs_7; snd ys_9]))))
+let rec key_handel_16 = ((fun () -> (Cons (Some (fst (((fun () -> !keyboard_update), StringSet.singleton "keyboard")) ()), key_handel_16))), (StringSet.union (StringSet.of_list ["keyboard"]) (List.fold_left StringSet.union StringSet.empty [])))
+let rec program_time_17 = let x_18 = ((fun () -> !second_update), StringSet.singleton "second") in
+((fun () -> (Cons (( fst_0 ) ( (system_time_buffer (), fst (x_18) ()) ), program_time_17))), (StringSet.union (StringSet.of_list []) (List.fold_left StringSet.union StringSet.empty [snd x_18])))
+let rec second_int_sig_19 = fun i_20 -> ((fun () -> (let second_21 = fst (((fun () -> !second_update), StringSet.singleton "second")) () in
+Cons (i_20, ( second_int_sig_19 ) ( ( ( + ) ( i_20 ) ) ( 1 ) )))), (StringSet.union (StringSet.of_list ["second"]) (List.fold_left StringSet.union StringSet.empty [])))
+let second_int_22 = fun i_23 -> Cons (i_23, ( second_int_sig_19 ) ( ( ( + ) ( i_23 ) ) ( 1 ) ))
+let () =
+	match ( ( zip_3 ) ( ( second_int_22 ) ( 1 ) ) ) ( Cons (0, program_time_17) ) with
+	| Cons (head, tail) ->
+	write_channel "console" head;
+	set_output_channel "console" tail
+
+    let rec loop () =
+        let channel_values = PE.handle_events () in
+            buffers := PE.buffer_values ();
+            StringMap.iter (fun channel_name value ->
+                update_input_channel channel_name value;
+                StringMap.iter (fun out_channel (thunk, in_channels) ->
+                    if StringSet.mem channel_name in_channels then
+                        match thunk () with
+                        | Cons (head, tail) ->
+                            write_channel out_channel head;
+                            set_output_channel out_channel tail
+                    else ()) !outputs) channel_values;
+            loop ()
+    let run () = 
+        let _ = PE.start_channels () in loop ()
+    end
+     end
 module PE = Arclib.Program_env.Make(Program_env_impl)
 module Program = Transpiled.Make(PE)
 let _ = Program.run ()
@@ -503,5 +623,4 @@ compile using:
     or
     'ocamlopt unix.cmxa -thread threads.cmxa <file>' 
 *)
-"
-let empty_template () = Printf.sprintf template "" ""
+
