@@ -343,25 +343,8 @@ let rec eval_term (Term((ln,typ),term)) =
         heap_type >>= fun heap_type -> (
         match heap_type with
         | OneHeap_t -> failwith "Cannot advance in a OneHeap"
-        | TwoHeap_t -> (
-            match term with
-            | Term(_,Value(Val(_,(Wait channel_name)))) ->
-                get_update >>= fun (_, value) -> return (value, singleton_clock channel_name)
-            | _ -> eval_term term >>= fun (value, clock) -> (
-                match value with
-                | Location (location, _) ->
-                    lookup_computation location >>= fun (Delayed delayed) -> ( 
-                        (* We can prevent evaluating the term multiple times by only doing it once in the input transition *)
-                        let VE value_env = delayed.value_env in
-                        push_scope >>>=
-                        declare_vars_in_value_env (VE value_env) >>>=
-                        eval_term delayed.term >>= fun v ->
-                        pop_scope >>>= return v
-                    )
-                | Wait_rv ->
-                    get_update >>= fun (channel_name, value) ->
-                    return (value, singleton_clock channel_name)
-                | _ -> fail ("Can only advance locations",Interpretation,None))))
+        | TwoHeap_t ->
+            eval_term term >>= fun (value, clock) -> advance value)
     | Select(cs0, cs1, v0, v1) -> (
         debug_print "Eval Select" >>>=
         get_update >>= fun (channel_name, value) ->
@@ -372,47 +355,17 @@ let rec eval_term (Term((ln,typ),term)) =
         let in_left = StringSet.mem channel_name cl0 in
         let in_right = StringSet.mem channel_name cl1 in
         match in_left, in_right with
-        | true, true -> (
-            match v0', v1' with
-            | Location (l0, _), Location (l1, _) ->
-                lookup_computation l0 >>= fun (Delayed d0) ->
-                lookup_computation l1 >>= fun (Delayed d1) ->
-                let VE ve0 = d0.value_env in
-                let VE ve1 = d1.value_env in
-                push_scope >>>=
-                declare_vars_in_value_env (VE ve0) >>>=
-                eval_term d0.term >>= fun (dv0, _) ->
-                pop_scope >>>=
-                push_scope >>>=
-                declare_vars_in_value_env (VE ve1) >>>=
-                eval_term d1.term >>= fun (dv1, _) ->
-                pop_scope >>>=
-                return (Construct_rv ("Both", Tuple_rv (dv0, dv1)), empty_clock) (* Use the correct clock *)
-            | _ -> failwith ("Not locations " ^ runtime_value_string v0' ^ ", " ^ runtime_value_string v1'))
+        | true, true ->
+            advance v0' >>= fun (v0'', _) ->
+            advance v1' >>= fun (v1'', _) ->
+            let clock = union_clocks (C cl0) (C cl1) in
+            return (Construct_rv ("Both", Tuple_rv (v0'', v1'')), clock)
         | true, false ->
-            eval_value v0 >>= fun (value, _) -> (
-            match value with
-            | Location (l, _) ->
-                lookup_computation l >>= fun (Delayed delayed) ->
-                let VE value_env = delayed.value_env in
-                push_scope >>>=
-                declare_vars_in_value_env (VE value_env) >>>=
-                eval_term delayed.term >>= fun (value, clock) ->
-                pop_scope >>>=
-                return (Construct_rv ("Left", Tuple_rv (value, v1')), clock)
-            | _ -> failwith ("Not a location " ^ runtime_value_string value))
+            advance v0' >>= fun (value, clock) ->
+            return (Construct_rv ("Left", Tuple_rv (value, v1')), clock)
         | false, true ->
-            eval_value v1 >>= fun (value, _) -> (
-            match value with
-            | Location (l, _) ->
-                lookup_computation l >>= fun (Delayed delayed) ->
-                let VE value_env = delayed.value_env in
-                push_scope >>>=
-                declare_vars_in_value_env (VE value_env) >>>=
-                eval_term delayed.term >>= fun (value, clock) ->
-                pop_scope >>>=
-                return (Construct_rv ("Right", Tuple_rv (v0', value)), clock)
-            | _ -> failwith ("Not a location " ^ runtime_value_string value))
+            advance v1' >>= fun (value, clock) ->
+            return (Construct_rv ("Right", Tuple_rv (v0', value)), clock)
         | false, false -> failwith "At least one clock must tick")
     | Unbox term ->
         debug_print "Eval Unbox" >>>=
@@ -468,6 +421,22 @@ and eval_value (Val((ln,typ),value) as wrap) =
         debug_print "Eval Construct" >>>=
         eval_term term >>= fun (value, clock) ->
             return (Construct_rv (name, value), clock)
+
+and advance value =
+    match value with
+    | Location (location, _) ->
+        lookup_computation location >>= fun (Delayed delayed) -> ( 
+            let VE value_env = delayed.value_env in
+            push_scope >>>=
+            declare_vars_in_value_env (VE value_env) >>>=
+            eval_term delayed.term >>= fun v ->
+            pop_scope >>>= return v
+        )
+    | Wait_rv ->
+        get_update >>= fun (channel_name, value) ->
+        return (value, singleton_clock channel_name)
+    | _ -> fail ("Can only advance locations and wait",Interpretation,None)
+
 
 let default_state =
     let S es = empty_state in
